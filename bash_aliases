@@ -9,3 +9,6 @@ alias ll='ls -la'
 
 # Suppress the copyright info when start gdb
 alias gdb='gdb -q'
+
+# fast clear
+alias c='clear'
