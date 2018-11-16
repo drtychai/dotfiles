@@ -15,13 +15,7 @@ Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'w0rp/ale'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+
 " Themes
 Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
@@ -83,7 +77,6 @@ endif
 :set tabstop=4
 
 " NAVIGATION
-
 " Jump to last cursor position unless it's invalid or in an event handler
 autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
