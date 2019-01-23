@@ -24,7 +24,6 @@ call plug#end()
 " Color scheme
 :syntax enable
 :set background=dark
-:silent! colorscheme jellybeans
 
 " Set background and font in gVim
 if has("gui_running")
@@ -75,6 +74,9 @@ endif
 
 " Set tabstop to 4
 :set tabstop=4
+
+" Show line numbers
+:set number
 
 " NAVIGATION
 " Jump to last cursor position unless it's invalid or in an event handler
