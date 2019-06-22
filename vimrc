@@ -75,6 +75,9 @@ endif
 " Set tabstop to 4
 :set tabstop=4
 
+" Expand tabs to spaces
+:set expandtab
+
 " Show line numbers
 :set number
 
@@ -241,6 +244,7 @@ let g:deoplete#enable_at_startup = 1
 " Tmuxline (Configures Tmux's statusbar)
 :let g:tmuxline_preset = 'powerline'
 :let g:tmuxline_theme = 'zenburn'
+":let g:tmuxline_file
 
 " taglist.vim
 :nnoremap <leader>z :TagbarToggle<CR>
