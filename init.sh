@@ -58,3 +58,11 @@ if ! grep -q dotfiles/bin $HOME/.bashrc; then
 else
     status "dotfiles bin already in .bashrc"
 fi
+
+# Copy karabiner JSON if on macOS
+if [[ "$OSTYPE" == *"darwin"* ]]; then
+    if [ -f $HOME/.config/karabiner/karabiner.json ]; then
+        mv $HOME/.config/karabiner/karabiner.json $HOME/.config/karabiner/karabiner.json.bak
+    fi
+    ln -s $DIR/karabiner.json $HOME/.config/karabiner/karabiner.json
+fi
