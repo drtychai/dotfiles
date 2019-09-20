@@ -15,7 +15,6 @@ Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'w0rp/ale'
-Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
 " Themes
 Plug 'altercation/vim-colors-solarized'
