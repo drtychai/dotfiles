@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -z "${1}" ] || [ -z "${2}" ];then
+    echo "[-] Usage ${0} <TOP_DIR> <PATTERN>"
+    exit
+fi
+
+NC='\033[0m'
+GREEN='\033[1;32m'
+
+DIR="${1}"
+PATTERN="${2}"
+
+for f in `find ${DIR} -name '*.java'`;do
+    G_OUT=`cat $f | grep --color=always -i $PATTERN`
+    if [ ! -z "${G_OUT}" ];then
+        echo -e "${GREEN}${f}${NC}"
+        echo -ne "${G_OUT}\n\n"
+    fi
+done
+
