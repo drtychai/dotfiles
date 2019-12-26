@@ -1,6 +1,11 @@
 #!/bin/bash
-set -e
 
+SH="bash"
+if [ "$1" == "zsh" ];then
+    SH="zsh"
+fi
+
+set -e
 DIR="$(cd "$(dirname "$0")" ; pwd -P)"
 backup=$HOME/dotfiles.bak
 
@@ -36,11 +41,11 @@ popd >/dev/null
 vim +'PlugInstall --sync' +qa
 
 # Install bash aliases
-if ! grep -q bash_aliases $HOME/.bashrc; then
-    echo "# Set up aliases" >> $HOME/.bashrc
-    echo "[ -f \$HOME/.bash_aliases ] && source \$HOME/.bash_aliases" >> $HOME/.bashrc
+if ! grep -q bash_aliases $HOME/.${SH}rc; then
+    echo "# Set up aliases" >> $HOME/.${SH}rc
+    echo "[ -f \$HOME/.bash_aliases ] && source \$HOME/.bash_aliases" >> $HOME/.${SH}rc
 else
-    status ".bash_aliases already in .bashrc"
+    status ".bash_aliases already in .${SH}rc"
 fi
 
 # Install git aliases
@@ -52,11 +57,11 @@ else
 fi
 
 # Add bin to PATH
-if ! grep -q dotfiles/bin $HOME/.bashrc; then
-	echo "# Add dotfiles bin to PATH" >> $HOME/.bashrc
-	echo "export PATH=\$PATH:$DIR/bin" >> $HOME/.bashrc
+if ! grep -q dotfiles/bin $HOME/.${SH}rc; then
+	echo "# Add dotfiles bin to PATH" >> $HOME/.${SH}rc
+	echo "export PATH=\$PATH:$DIR/bin" >> $HOME/.${SH}rc
 else
-    status "dotfiles bin already in .bashrc"
+    status "dotfiles bin already in .${SH}rc"
 fi
 
 # Copy karabiner JSON if on macOS
