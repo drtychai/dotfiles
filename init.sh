@@ -70,4 +70,5 @@ if [[ "$OSTYPE" == *"darwin"* ]]; then
         mv $HOME/.config/karabiner/karabiner.json $HOME/.config/karabiner/karabiner.json.bak
     fi
     ln -s $DIR/karabiner.json $HOME/.config/karabiner/karabiner.json
+    echo "export PATH=\$PATH:/usr/local/sbin" >> $HOME/.${SH}rc
 fi
