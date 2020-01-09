@@ -40,6 +40,9 @@ popd >/dev/null
 # Install vim plugins
 vim +'PlugInstall --sync' +qa
 
+# Clone Tmux Plugin Manager
+git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+
 # Install bash aliases
 if ! grep -q bash_aliases $HOME/.${SH}rc; then
     echo "# Set up aliases" >> $HOME/.${SH}rc
@@ -70,12 +73,15 @@ if [[ "$OSTYPE" == *"darwin"* ]]; then
         mv $HOME/.config/karabiner/karabiner.json $HOME/.config/karabiner/karabiner.json.bak
     fi
     ln -s $DIR/karabiner.json $HOME/.config/karabiner/karabiner.json
-    echo "export PATH=\$PATH:/usr/local/sbin" >> $HOME/.${SH}rc
+
+    if ! grep -q '/usr/local/sbin' $HOME/.${SH}rc; then
+        echo "export PATH=\$PATH:/usr/local/sbin" >> $HOME/.${SH}rc
+    fi
 fi
 
 # Custom zsh prompt
-if [ "${SH}" == "zsh" ];then
+if [ "${SH}" == "zsh" ] && ! grep -q 'PROMPT+' $HOME/.${SH}rc;then
     echo -ne "\n# Custom zsh prompt\n" >> $HOME/.${SH}rc
-    echo "PROMPT=\"%(?:%{\$fg_bold[green]%}%m ➜:%{\$fg_bold[red]%}➜ )\"" >> $HOME/.${SH}rc
+    echo "PROMPT=\"%(?:%{\$fg_bold[green]%}%m ➜:%{\$fg_bold[red]%}%m ➜)\"" >> $HOME/.${SH}rc
     echo "PROMPT+=' %{\$fg[cyan]%}%c%{\$reset_color%} \$(git_prompt_info)'" >> $HOME/.${SH}rc
 fi
