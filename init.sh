@@ -72,3 +72,10 @@ if [[ "$OSTYPE" == *"darwin"* ]]; then
     ln -s $DIR/karabiner.json $HOME/.config/karabiner/karabiner.json
     echo "export PATH=\$PATH:/usr/local/sbin" >> $HOME/.${SH}rc
 fi
+
+# Custom zsh prompt
+if [ "${SH}" == "zsh" ];then
+    echo -ne "\n# Custom zsh prompt\n" >> $HOME/.${SH}rc
+    echo "PROMPT=\"%(?:%{\$fg_bold[green]%}%m ➜:%{\$fg_bold[red]%}➜ )\"" >> $HOME/.${SH}rc
+    echo "PROMPT+=' %{\$fg[cyan]%}%c%{\$reset_color%} \$(git_prompt_info)'" >> $HOME/.${SH}rc
+fi
