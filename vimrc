@@ -15,6 +15,7 @@ Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'w0rp/ale'
+Plug 'keith/swift.vim'
 
 " Themes
 Plug 'altercation/vim-colors-solarized'
