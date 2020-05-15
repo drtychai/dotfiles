@@ -41,7 +41,7 @@ popd >/dev/null
 vim +'PlugInstall --sync' +qa
 
 # Clone Tmux Plugin Manager
-git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+rm -rf $HOME/.tmux/plugins/tpm 2>&1 > /dev/null && git clone --quiet https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
 # Install bash aliases
 if ! grep -q bash_aliases $HOME/.${SH}rc; then
