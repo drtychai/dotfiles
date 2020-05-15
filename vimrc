@@ -53,6 +53,9 @@ endif
 :highlight TrailingWhitespace ctermbg=darkred guibg=darkred
 :let w:m2=matchadd('TrailingWhitespace', '\s\+$\| \+\ze\t\|\t\+\ze ')
 
+" Remove highlted whitespace
+autocmd BufWritePre * %s/^\s\+$//e
+
 " Remap <leader>
 :let mapleader="\<Space>"
 
