@@ -176,7 +176,7 @@ set scrolloff=4
 :nnoremap <leader>W :%s/\s\+$//<CR><C-o>
 
 " Clear leading whitespace
-:nnoremap <leader>w :%s/^\s\+$//e<CR><C-o>
+":nnoremap <leader>w :%s/^\s\+$//e<CR><C-o>
 
 " Convert tabs to spaces
 :nnoremap <leader>T :%s/\t/    /g<CR>
