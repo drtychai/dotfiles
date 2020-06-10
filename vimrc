@@ -53,9 +53,6 @@ endif
 :highlight TrailingWhitespace ctermbg=darkred guibg=darkred
 :let w:m2=matchadd('TrailingWhitespace', '\s\+$\| \+\ze\t\|\t\+\ze ')
 
-" Remove highlted whitespace
-autocmd BufWritePre * %s/^\s\+$//e
-
 " Remap <leader>
 :let mapleader="\<Space>"
 
@@ -76,11 +73,8 @@ autocmd BufWritePre * %s/^\s\+$//e
 " Show the normal mode command as I type it
 :set showcmd
 
-" Set tabstop to 4
-:set tabstop=4
-
-" Expand tabs to spaces
-:set expandtab
+" Expand tab to 4 spaces
+:set tabstop=4 shiftwidth=4 expandtab
 
 " Show line numbers
 :set number
@@ -181,6 +175,9 @@ set scrolloff=4
 " Clear trailing whitespace
 :nnoremap <leader>W :%s/\s\+$//<CR><C-o>
 
+" Clear leading whitespace
+:nnoremap <leader>w :%s/^\s\+$//e<CR><C-o>
+
 " Convert tabs to spaces
 :nnoremap <leader>T :%s/\t/    /g<CR>
 
@@ -271,3 +268,4 @@ let g:deoplete#enable_at_startup = 1
 :let g:ale_lint_on_save = 1
 :let g:ale_lint_on_text_changed = 0
 :let g:ale_sign_column_always = 1
+:let g:ale_python_bandit_executable = 0
