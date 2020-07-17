@@ -44,11 +44,6 @@ Plug 'vim-airline/vim-airline-themes'
 :nnoremap <silent> <leader>p :Files<CR>
 call plug#end()
 
-" Color scheme
-:syntax enable
-:set background=dark
-:set termguicolors
-
 " Use local config if it exists
 if filereadable($HOME . "/.vimrc.local")
     source ~/.vimrc.local
