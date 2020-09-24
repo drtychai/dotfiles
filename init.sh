@@ -85,6 +85,11 @@ if [[ "$OSTYPE" == *"darwin"* ]]; then
     if ! grep -q '/usr/local/sbin' $HOME/.${SH}rc; then
         echo "export PATH=\$PATH:/usr/local/sbin" >> $HOME/.${SH}rc
     fi
+
+    # Base16 Shell
+    BASE16_SHELL="$HOME/.config/base16-shell/"
+    [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
 fi
 
 # Custom zsh prompt
@@ -92,4 +97,6 @@ if [ "${SH}" == "zsh" ] && ! grep -q 'PROMPT+' $HOME/.${SH}rc;then
     echo -ne "\n# Custom zsh prompt\n" >> $HOME/.${SH}rc
     echo "PROMPT=\"%(?:%{\$fg_bold[green]%}%m ➜:%{\$fg_bold[red]%}%m ➜)\"" >> $HOME/.${SH}rc
     echo "PROMPT+=' %{\$fg[cyan]%}%c%{\$reset_color%} \$(git_prompt_info)'" >> $HOME/.${SH}rc
+
 fi
+

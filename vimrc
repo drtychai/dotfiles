@@ -5,44 +5,35 @@ Plug 'bling/vim-bufferline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'edkolev/tmuxline.vim'
+
 Plug 'fatih/vim-go'
 :let g:go_version_warning = 0
 Plug 'rust-lang/rust.vim'
+
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
+
+Plug 'chriskempson/base16-vim'
+
 Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
+
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'w0rp/ale'
 Plug 'keith/swift.vim'
-
-" Themes
-Plug 'vim-airline/vim-airline-themes'
-:let g:airline_theme = 'base16_tomorrow'
-:let g:airline#extensions#tabline#enabled          = 1
-:let g:airline_powerline_fonts                     = 1
-:let g:airline#extensions#tabline#enabled          = 1
-:let g:airline#extensions#tabline#buffer_min_count = 1
-:let g:airline#extensions#tabline#tab_min_count    = 1
-:let g:airline#extensions#tabline#buffer_idx_mode  = 1
-:let g:airline#extensions#tabline#buffer_nr_show   = 0
-:let g:airline#extensions#tabline#show_buffers     = 1
-:let g:airline#extensions#branch#enabled           = 1
-
-" Easier tab/buffer switching
-:nmap <leader>1 <Plug>AirlineSelectTab1
-:nmap <leader>2 <Plug>AirlineSelectTab2
-:nmap <leader>3 <Plug>AirlineSelectTab3
-:nmap <leader>4 <Plug>AirlineSelectTab4
-:nmap <leader>5 <Plug>AirlineSelectTab5
-:nmap <leader>6 <Plug>AirlineSelectTab6
-:nmap <leader>7 <Plug>AirlineSelectTab7
-:nmap <leader>8 <Plug>AirlineSelectTab8
-:nmap <leader>9 <Plug>AirlineSelectTab9
-
-:nnoremap <silent> <leader>p :Files<CR>
 call plug#end()
+
+" Color scheme
+:let base16colorspace=256
+:syntax enable
+:set background=dark
+:silent! colorscheme base16-tomorrow-night
+
+if filereadable(expand("~/.vimrc_background"))
+    let base16colorspace=256
+    source ~/.vimrc_background
+endif
 
 " Use local config if it exists
 if filereadable($HOME . "/.vimrc.local")
@@ -276,5 +267,14 @@ let g:deoplete#enable_at_startup = 1
 :let g:ale_lint_on_save = 1
 :let g:ale_lint_on_text_changed = 0
 :let g:ale_sign_column_always = 1
-:let g:ale_python_bandit_executable = 0
+
+"" linter options
+""" rust
+:let g:ale_linters = {'rust': ['analyzer'], 'python': ['mypy', "pylint"]}
+
+""" python linter options
+:let g:ale_python_pylint_options = '--max-line-length=150 --ignore=E265,E266,E501'
+:let g:ale_python_mypy_options = '--ignore-missing-imports'
+
+""" typescript
 :let g:ale_linter_aliases = {'typescriptreact': 'typescript'}
