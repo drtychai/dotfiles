@@ -1,41 +1,67 @@
 " Vim-Plug Plugins
 call plug#begin('~/.vim/plugged')
+
+
+" Tmux and Vim bars (currently on the bottom ones)
 Plug 'itchyny/lightline.vim'
 Plug 'bling/vim-bufferline'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'edkolev/tmuxline.vim'
 
-Plug 'fatih/vim-go'
-:let g:go_version_warning = 0
-Plug 'rust-lang/rust.vim'
+Plug 'w0rp/ale'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-Plug 'scrooloose/nerdcommenter'
+" Directory tree in adjecment window (in vim)
 Plug 'scrooloose/nerdtree'
+
+" Run git commands in vim, e.g.:`:G status`
 Plug 'tpope/vim-fugitive'
 
-Plug 'chriskempson/base16-vim'
-
-Plug 'majutsushi/tagbar'
+" Shows the git diff [+/-] for modified files in a repo
 Plug 'airblade/vim-gitgutter'
 
+" Dsplays `ctags`-generated tags of the current file,
+" ordered by their scope, in adjacment window (in vim)
+Plug 'preservim/tagbar'
+
+" Color scheme plug and config
+Plug 'chriskempson/base16-vim'
+
+" Async Language Server Protocol plugin
+Plug 'prabirshrestha/vim-lsp'
+" LSP Automation Settings
+Plug 'mattn/vim-lsp-settings'
+
+" Language : Go
+Plug 'fatih/vim-go'
+
+" Language : Rust
+Plug 'rust-lang/rust.vim'
+
+" Language : Markdown
 Plug 'jtratner/vim-flavored-markdown'
-Plug 'w0rp/ale'
+
+" Language : Swift
 Plug 'keith/swift.vim'
+
+" Language : TeX
+Plug 'lervag/vimtex'
+
+" Language : TeX function abstration
+Plug 'sirver/ultisnips'
+
+
 call plug#end()
 
-" Color scheme
-:let base16colorspace=256
-:syntax enable
-:set background=dark
-:silent! colorscheme base16-tomorrow-night
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Use previous color configuration, if present
 if filereadable(expand("~/.vimrc_background"))
     let base16colorspace=256
     source ~/.vimrc_background
 endif
 
-" Use local config if it exists
+" Use local config, if present
 if filereadable($HOME . "/.vimrc.local")
     source ~/.vimrc.local
 endif
@@ -237,6 +263,7 @@ nnoremap Q <nop>
 :nmap <leader>dp :diffput<CR>
 :nmap <leader>du :diffupdate<CR>
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CONFIGURE PLUGINS
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
@@ -263,18 +290,39 @@ let g:deoplete#enable_at_startup = 1
 :nmap <leader>t :Tags<CR>
 :nmap <leader>s :Lines<CR>
 
-" ale
+" ALE
 :let g:ale_lint_on_save = 1
 :let g:ale_lint_on_text_changed = 0
 :let g:ale_sign_column_always = 1
 
-"" linter options
-""" rust
-:let g:ale_linters = {'rust': ['analyzer'], 'python': ['mypy', "pylint"]}
-
-""" python linter options
+"" ALE : python
 :let g:ale_python_pylint_options = '--max-line-length=150 --ignore=E265,E266,E501'
 :let g:ale_python_mypy_options = '--ignore-missing-imports'
 
-""" typescript
+"" ALE : typescript
 :let g:ale_linter_aliases = {'typescriptreact': 'typescript'}
+
+" vimtex
+:let g:tex_flavor='latex'
+:let g:vimtex_view_method='zathura'
+:let g:vimtex_quickfix_mode=0
+:set conceallevel=1
+:let g:tex_conceal='abdmg'
+
+" ultisnips
+:let g:UltiSnipsExpandTrigger = '<tab>'
+:let g:UltiSnipsJumpForwardTrigger = '<tab>'
+:let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+
+" vim-go
+:let g:go_version_warning = 0
+
+" rust.vim
+:let g:autofmt_autosave = 1
+:let g:rust_clip_command = 'pbcopy'
+
+" Theme
+:let base16colorspace=256
+:syntax enable
+:set background=dark
+:silent! colorscheme base16-tomorrow-night
