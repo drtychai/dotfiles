@@ -1,5 +1,5 @@
 {
-  "Custom Directory" : "No",
+  "Thin Strokes" : 1,
   "Working Directory" : "\/Users\/bynx",
   "Prompt Before Closing 2" : 2,
   "Selected Text Color" : {
@@ -32,8 +32,9 @@
     "Green Component" : 0.23137254901960785
   },
   "Blend" : 0.050000000000000003,
-  "Mouse Reporting" : false,
-  "Cursor Boost" : 0.067222612359550557,
+  "Show Mark Indicators" : true,
+  "Mouse Reporting" : true,
+  "Cursor Boost" : 0,
   "Ansi 4 Color" : {
     "Red Component" : 0.50588235294117645,
     "Color Space" : "sRGB",
@@ -54,7 +55,8 @@
   "Non-ASCII Ligatures" : true,
   "Scrollback Lines" : 0,
   "Scrollback in Alternate Screen" : false,
-  "Draw Powerline Glyphs" : false,
+  "Scrollback With Status Bar" : false,
+  "Draw Powerline Glyphs" : true,
   "Status Bar Layout" : {
     "components" : [
       {
@@ -62,7 +64,6 @@
         "configuration" : {
           "knobs" : {
             "path" : "path",
-            "base: compression resistance" : 10,
             "shared text color" : {
               "Red Component" : 0.89999997615814209,
               "Color Space" : "sRGB",
@@ -72,28 +73,13 @@
             },
             "base: priority" : 5,
             "minwidth" : 0,
+            "base: compression resistance" : 4.1500000000000004,
             "maxwidth" : 1.7976931348623157e+308
           },
           "layout advanced configuration dictionary value" : {
-            "font" : "FiraCode-Retina 11",
+            "font" : "FiraCode-Retina 13",
             "auto-rainbow style" : 0,
-            "algorithm" : 1
-          }
-        }
-      },
-      {
-        "class" : "iTermStatusBarSpringComponent",
-        "configuration" : {
-          "knobs" : {
-            "base: priority" : 5,
-            "iTermStatusBarSpringComponentSpringConstantKey" : 0.01,
-            "base: compression resistance" : 1,
-            "iTermStatusBarSpringComponentSizeMultipleKey" : 1
-          },
-          "layout advanced configuration dictionary value" : {
-            "font" : "FiraCode-Retina 11",
-            "auto-rainbow style" : 0,
-            "algorithm" : 1
+            "algorithm" : 0
           }
         }
       },
@@ -101,19 +87,19 @@
         "class" : "iTermStatusBarCPUUtilizationComponent",
         "configuration" : {
           "knobs" : {
-            "base: priority" : 9,
+            "base: priority" : 5,
             "shared text color" : {
-              "Red Component" : 0.80145,
+              "Red Component" : 0.80145001411437988,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.63,
+              "Blue Component" : 0.62999999523162842,
               "Alpha Component" : 1,
-              "Green Component" : 0.90000000000000002
+              "Green Component" : 0.89999997615814209
             }
           },
           "layout advanced configuration dictionary value" : {
-            "font" : "FiraCode-Retina 11",
+            "font" : "FiraCode-Retina 13",
             "auto-rainbow style" : 0,
-            "algorithm" : 1
+            "algorithm" : 0
           }
         }
       },
@@ -121,19 +107,19 @@
         "class" : "iTermStatusBarMemoryUtilizationComponent",
         "configuration" : {
           "knobs" : {
-            "base: priority" : 9,
+            "base: priority" : 5,
             "shared text color" : {
-              "Red Component" : 0.63,
+              "Red Component" : 0.62999999523162842,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.82710000000000006,
+              "Blue Component" : 0.82709997892379761,
               "Alpha Component" : 1,
-              "Green Component" : 0.90000000000000002
+              "Green Component" : 0.89999997615814209
             }
           },
           "layout advanced configuration dictionary value" : {
-            "font" : "FiraCode-Retina 11",
+            "font" : "FiraCode-Retina 13",
             "auto-rainbow style" : 0,
-            "algorithm" : 1
+            "algorithm" : 0
           }
         }
       },
@@ -143,17 +129,17 @@
           "knobs" : {
             "base: priority" : 5,
             "shared text color" : {
-              "Red Component" : 0.65564999999999996,
+              "Red Component" : 0.65565001964569092,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.90000000000000002,
+              "Blue Component" : 0.89999997615814209,
               "Alpha Component" : 1,
-              "Green Component" : 0.63
+              "Green Component" : 0.62999999523162842
             }
           },
           "layout advanced configuration dictionary value" : {
-            "font" : "FiraCode-Retina 11",
+            "font" : "FiraCode-Retina 13",
             "auto-rainbow style" : 0,
-            "algorithm" : 1
+            "algorithm" : 0
           }
         }
       },
@@ -164,26 +150,26 @@
             "ShowPercentage" : 1,
             "base: priority" : 5,
             "shared text color" : {
-              "Red Component" : 0.90000000000000002,
+              "Red Component" : 0.89999997615814209,
               "Color Space" : "sRGB",
-              "Blue Component" : 0.77580000000000005,
+              "Blue Component" : 0.77579998970031738,
               "Alpha Component" : 1,
-              "Green Component" : 0.63
+              "Green Component" : 0.62999999523162842
             },
             "ShowTime" : 1
           },
           "layout advanced configuration dictionary value" : {
-            "font" : "FiraCode-Retina 11",
+            "font" : "FiraCode-Retina 13",
             "auto-rainbow style" : 0,
-            "algorithm" : 1
+            "algorithm" : 0
           }
         }
       }
     ],
     "advanced configuration" : {
-      "font" : "FiraCode-Retina 11",
+      "font" : "FiraCode-Retina 13",
       "auto-rainbow style" : 0,
-      "algorithm" : 1
+      "algorithm" : 0
     }
   },
   "Hide After Opening" : false,
@@ -434,8 +420,9 @@
     "Blue Component" : 0.77647058823529413,
     "Green Component" : 0.78431372549019607
   },
-  "Disable Smcup Rmcup" : true,
+  "Disable Smcup Rmcup" : false,
   "Name" : "b16-default-dark (256)",
+  "Guid" : "769269E2-2720-4CC4-B781-860DD48E86E5",
   "Blinking Cursor" : false,
   "Ansi 1 Color" : {
     "Red Component" : 0.80000000000000004,
@@ -443,20 +430,19 @@
     "Blue Component" : 0.40000000000000002,
     "Green Component" : 0.40000000000000002
   },
-  "Guid" : "769269E2-2720-4CC4-B781-860DD48E86E5",
-  "Idle Code" : 0,
-  "Ansi 10 Color" : {
-    "Red Component" : 0.70980392156862748,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.40784313725490196,
-    "Green Component" : 0.74117647058823533
-  },
   "Ansi 8 Color" : {
     "Red Component" : 0.58823529411764708,
     "Color Space" : "sRGB",
     "Blue Component" : 0.58823529411764708,
     "Green Component" : 0.59607843137254901
   },
+  "Ansi 10 Color" : {
+    "Red Component" : 0.70980392156862748,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0.40784313725490196,
+    "Green Component" : 0.74117647058823533
+  },
+  "Idle Code" : 0,
   "Badge Color" : {
     "Red Component" : 1,
     "Color Space" : "sRGB",
@@ -484,9 +470,10 @@
     "Blue Component" : 0.77647058823529413,
     "Green Component" : 0.78431372549019607
   },
+  "Place Prompt at First Column" : true,
   "Command" : "",
   "Terminal Type" : "xterm-256color",
-  "Horizontal Spacing" : 0.84999999999999998,
+  "Horizontal Spacing" : 0.85999999999999999,
   "Reduce Flicker" : true,
   "Option Key Sends" : 0,
   "Only The Default BG Color Uses Transparency" : false,
@@ -514,7 +501,7 @@
     "Alpha Component" : 1,
     "Green Component" : 0.094117647058823528
   },
-  "Screen" : -1,
+  "Screen" : 0,
   "Initial Use Transparency" : false,
   "Bound Hosts" : [
 
@@ -531,11 +518,11 @@
   "Use Tab Color" : false,
   "Visual Bell" : false,
   "ASCII Ligatures" : true,
-  "Thin Strokes" : 1,
   "Ansi 5 Color" : {
     "Red Component" : 0.69803921568627447,
     "Color Space" : "sRGB",
     "Blue Component" : 0.73333333333333328,
     "Green Component" : 0.58039215686274515
-  }
+  },
+  "Custom Directory" : "No"
 }

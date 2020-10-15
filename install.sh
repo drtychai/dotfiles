@@ -67,14 +67,6 @@ else
     status "dotfiles bin already in .${SH}rc"
 fi
 
-# Add ~/bin to PATH if created
-if ! [[ -z ${HOME}/bin ]];then
-    echo "# Add user bin to PATH" >> $HOME/.${SH}rc
-    echo "export PATH=\$PATH:$HOME/bin" >> $HOME/.${SH}rc
-else
-    status "no directly bin in $HOME"
-fi
-
 # Copy karabiner JSON if on macOS
 if [[ "$OSTYPE" == *"darwin"* ]]; then
     if [ -f $HOME/.config/karabiner/karabiner.json ]; then

@@ -1,3 +1,4 @@
 plugged/
 weechat/
 weechat/*.conf
+.DS_Store
