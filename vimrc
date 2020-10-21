@@ -43,7 +43,7 @@ Plug 'keith/swift.vim'
 Plug 'lervag/vimtex'
 
 " Language : TeX function abstration
-Plug 'sirver/ultisnips'
+"Plug 'sirver/ultisnips'
 
 " Color scheme plug and config
 Plug 'chriskempson/base16-vim'
@@ -324,9 +324,9 @@ call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 :let g:tex_conceal='abdmg'
 
 " ultisnips
-:let g:UltiSnipsExpandTrigger = '<tab>'
-:let g:UltiSnipsJumpForwardTrigger = '<tab>'
-:let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+":let g:UltiSnipsExpandTrigger = '<tab>'
+":let g:UltiSnipsJumpForwardTrigger = '<tab>'
+":let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 " vim-go
 :let g:go_version_warning = 0

@@ -12,3 +12,6 @@ alias gdb='gdb -q'
 
 # fast clear
 alias c='clear'
+
+# vim
+alias vi='`which vim`'

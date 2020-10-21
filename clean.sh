@@ -2,16 +2,16 @@
 
 # List of symlinks to remove
 FILES="${HOME}/.bash_aliases
-${HOME}/.bin
-${HOME}/.iterm2
-${HOME}/.karabiner.json
-${HOME}/.README.md
 ${HOME}/.tmux
 ${HOME}/.tmux.conf
 ${HOME}/.vim
-${HOME}/.vimrc
-${HOME}/.weechat"
+${HOME}/.vimrc"
 
+# Delete all dotfiles-related directories
 for f in $FILES; do
-    rm -rfi $f
+    if [[ "${f}" == *".tmux" ]];then
+        rm -rf ${f}
+    else
+        rm -rfi $f
+    fi
 done
