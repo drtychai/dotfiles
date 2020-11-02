@@ -27,6 +27,9 @@ Plug 'prabirshrestha/vim-lsp'
 " LSP Automation Settings
 Plug 'mattn/vim-lsp-settings'
 
+" rtags LSP
+Plug 'lyuts/vim-rtags'
+
 " Language : Go
 Plug 'fatih/vim-go'
 
@@ -173,6 +176,16 @@ set scrolloff=4
 " always show the status bar
 :set laststatus=2
 
+" window number for vi status bar
+function! WindowNumber()
+    let str=tabpagewinnr(tabpagenr())
+    return str
+endfunction
+:set statusline=win:%{WindowNumber()}
+
+" status bar highlighting
+:hi StatusLine term=bold cterm=bold ctermfg=White ctermbg=235
+
 " hide mode so it shows on the statusbar only
 :set noshowmode
 
@@ -258,6 +271,18 @@ nnoremap Q <nop>
 :nmap <leader>dp :diffput<CR>
 :nmap <leader>du :diffupdate<CR>
 
+"Navigate windows using vi bindings
+"noremap <C-J> <C-W>w
+"noremap <C-K> <C-W>W
+"noremap <C-L> <C-W>l
+"noremap <C-H> <C-W>h
+
+let i = 1
+while i <= 9
+    execute 'nnoremap <Leader>' . i . ' :' . i . 'wincmd w<CR>'
+    let i = i + 1
+endwhile
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CONFIGURE PLUGINS
 " Use deoplete.
@@ -273,6 +298,10 @@ let g:deoplete#enable_at_startup = 1
 
 " NERDTree
 :nnoremap <leader>n :NERDTreeToggle<CR>
+" Auto start
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " NERDTress File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
   exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
