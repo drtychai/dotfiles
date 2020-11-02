@@ -1,0 +1,15 @@
+alias cat=bat
+alias ls=exa
+alias find=fd
+alias ps=procs
+alias sed=sd
+alias du=dust
+alias dig=dog
+alias zsh=starship
+alias grep=rg
+#alias =tokei
+#alias =hyperfine
+#alias =ytop
+#alias =bandwhich
+#alias =grex
+#alias =zoxide

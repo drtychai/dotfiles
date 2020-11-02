@@ -53,6 +53,15 @@ function map_aliases {
     else
         exists ".gitaliases already in .gitconfig"
     fi
+
+    # Install rust aliases
+    if ! grep -q aliases $HOME/.cargo/env 2>/dev/null; then
+        echo "source ${DIR}/config/cargo/aliases" >> ${HOME}/.cargo/env
+    else
+        exists "rust aliases already in .cargo/env"
+    fi
+
+
 }
 
 function map_symlinks {
