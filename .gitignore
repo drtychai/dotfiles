@@ -1,5 +1,5 @@
-plugged/
-weechat/
-weechat/*.conf
-.DS_Store
-.backup
+**/config/karabiner/automatic_backups
+**/plugged
+**/weechat
+**/.DS_Store
+**/.backup

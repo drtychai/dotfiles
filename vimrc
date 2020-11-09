@@ -42,6 +42,9 @@ Plug 'jtratner/vim-flavored-markdown'
 " Language : Swift
 Plug 'keith/swift.vim'
 
+" Language : Kotlin
+Plug 'udalov/kotlin-vim'
+
 " Language : TeX
 Plug 'lervag/vimtex'
 
@@ -334,6 +337,11 @@ call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 :nmap <leader>s :Lines<CR>
 
 " ALE
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'kotlin': ['klint'],
+\}
+
 :let g:ale_lint_on_save = 1
 :let g:ale_lint_on_text_changed = 0
 :let g:ale_sign_column_always = 1
