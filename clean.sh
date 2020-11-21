@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # Colors
@@ -12,12 +12,12 @@ function status {
     echo "${L_GREEN}[*]${NC}" $@
 }
 
-function exists {
+function info {
     echo "${L_RED}[-]${NC}" $@
 }
 
 function restore {
-    echo "${L_BLUE}[-]${NC}" $@
+    echo "${L_BLUE}[+]${NC}" $@
 }
 
 # List of symlinks to remove
@@ -28,7 +28,7 @@ for f in "${LINKED[@]}"; do
     # Delete directories without prompt
     if [ -d ${f} ];then
         status "Removing directory ${f}"        
-	rm -rf ${f}
+        rm -rf ${f}
     # Restore backups, if present
     elif [ -f ${f}.bak ];then
         restore "Restoring ${f}"
@@ -37,7 +37,7 @@ for f in "${LINKED[@]}"; do
     elif [ -f ${f} ];then
         unlink ${f}
     else
-        echo $f
+        info "${f} not present"
         continue
     fi
 done
