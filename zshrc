@@ -46,4 +46,3 @@ ${HOME}/.config/base16_color_space.sh
 eval "$(zoxide init posix --hook prompt)"
 
 #eval "$(starship init zsh)"
-

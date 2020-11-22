@@ -3,8 +3,8 @@ set -e
 
 # Colors
 L_GREEN='\033[1;32m'
-L_RED='\033[1;31m'
 L_BLUE='\033[1;34m'
+L_RED='\033[1;31m'
 NC='\033[0m' # No Color
 
 # Globals
@@ -12,16 +12,27 @@ SH=`echo ${SHELL} | cut -d '/' -f3`
 DIR="$(cd "$(dirname "$0")" ; pwd -P)"
 
 # Logging
-function status {
-    echo -e "${L_GREEN}[*]${NC}" $@
-}
+function info  { echo -e "${L_GREEN}[*]${NC}" $@; }
+function debug { echo -e "${L_BLUE}[-]${NC}" $@; }
+function error { echo -e "${L_RED}[-]${NC}" $@; }
 
-function exists {
-    echo -e "${L_RED}[-]${NC}" $@
-}
-
-function backup {
-    echo -e "${L_BLUE}[-]${NC}" $@
+# Create a symbolic link from the file/dir in our repo to
+# the local environment. If file currently exists, attempt to
+# manually unlink performs recursively calls until all links created
+# --> fn args are idential to symlink <SRC> <TRGT>
+function symlink {
+    local src_name=${1}
+    local trgt_name=${2}
+    if ! `ln -s ${src_name} ${trgt_name}`; then
+        debug "Manually unlinking ${trgt_name}..."
+        if ! `unlink -rf ${trgt_name}`; then
+            error "Cannot manually unlink..."
+            #exit 1
+            continue
+        fi
+        debug "Performing recursive call to symlink fn..."
+        symlink ${trgt_name}
+    fi
 }
 
 function map_local_bins {
@@ -30,14 +41,14 @@ function map_local_bins {
     	echo "# Add dotfiles bin to PATH" >> ${HOME}/.${SH}rc
     	echo "export PATH=\${PATH}:${DIR}/bin" >> ${HOME}/.${SH}rc
     else
-        exists "dotfiles bin already in .${SH}rc PATH"
+        error "dotfiles bin already in .${SH}rc PATH"
     fi
 
     # Add to path in ${HOME}/.${SH}rc
     if ! grep -q '/usr/local/sbin' ${HOME}/.${SH}rc; then
         echo "export PATH=\$PATH:/usr/local/sbin" >> ${HOME}/.${SH}rc
     else
-        exists "local sbin already in .${SH}rc PATH"
+        error "local sbin already in .${SH}rc PATH"
     fi
 }
 
@@ -48,7 +59,7 @@ function map_aliases {
         echo "# Set up aliases" >> ${HOME}/.${SH}rc
         echo "[ -f \${HOME}/.bash_aliases ] && source \${HOME}/.bash_aliases" >> ${HOME}/.${SH}rc
     else
-        exists ".bash_aliases already in .${SH}rc"
+        error ".bash_aliases already in .${SH}rc"
     fi
 
     # Install git aliases
@@ -56,21 +67,20 @@ function map_aliases {
         echo "[include]" >> ${HOME}/.gitconfig
         echo "	path = ~/.gitaliases" >> ${HOME}/.gitconfig
     else
-        exists ".gitaliases already in .gitconfig"
+        error ".gitaliases already in .gitconfig"
     fi
 
     # Install rust aliases
     if ! grep -q rs-aliases ${HOME}/.cargo/env 2>/dev/null; then
         echo "source ${DIR}/config/cargo/rs-aliases" >> ${HOME}/.cargo/env
     else
-        exists "rust aliases already in .cargo/env"
+        error "rust aliases already in .cargo/env"
     fi
 }
 
 function map_symlinks {
     # Excluded files
-    #declare -a excluded=("README.md" "bin" "iterm2" "install.sh" "clean.sh" "config")
-
+    ###declare -a excluded=("README.md" "bin" "iterm2" "install.sh" "clean.sh" "config")
     # Setup symlinks
     for file in ${DIR}/*; do
       case "${file}" in
@@ -107,86 +117,52 @@ function map_symlinks {
 
 function link {
     local filename="$(basename $file)"
-    local backup="${DIR}/.backup"
+    local debug="${DIR}/.debug"
     if [[ "${filename}" != "$(basename $0)" ]]; then
         if [ -e ${HOME}/.${filename} ]; then
             if ! [ -h ${HOME}/.${filename} ]; then
-                mkdir -p $backup
-                # Move existing dotfile to $backup
-                mv ${HOME}/.${filename} $backup/
+                mkdir -p $debug
+                # Move existing dotfile to $debug
+                mv ${HOME}/.${filename} $debug/
             else
-                exists .${filename} is already symlinked
+                error ".${filename} is already symlinked"
                 continue
             fi
         fi
-        status "Creating link for .${filename}"
-        ln -s ${DIR}/${filename} ${HOME}/.${filename}
+        info "Creating link for .${filename}"
+        symlink ${DIR}/${filename} ${HOME}/.${filename}
     fi
 }
 
 function link_config_to_local {
     # Explicit configuration files to symlink
-    #declare -a included=("cargo" "karabiner")
     local usr_conf="${HOME}/.config"
     local config_dir="${DIR}/config"
 
     # Setup symlinks
     for d in ${config_dir}/*; do
       case "${d}" in
-        *"cargo")
-            # Create directory if not present 
-            if [ ! -e ${HOME}/.cargo ];then
-                # Install rust
-                #install_rust
-                mkdir -p ${HOME}/.cargo 
-            fi
-           
-            # Link: env, aliases
-            #declare -a lnk_array=("env" "rs-aliases")
-            declare -a lnk_array=("env")
-            for f in "${lnk_array[@]}"; do
-                if [ -f "${HOME}/.cargo/${f}" ];then
-	            backup "Backing up ~/.cargo/${f}"
-		    mv ${HOME}/.cargo/${f} ${HOME}/.cargo/${f}.bak
-	        fi
-		status "Creating link for ~/.cargo/${f}"
-                ln -s ${config_dir}/${f} ${HOME}/.cargo/${f}
-            done
-
-            # Link: rustfmt config
-            local rs_fmt="rustfmt.toml"
-            if [ -f "${HOME}/.${rs_fmt}" ];then
-                backup "Backing up rustfmt.toml"
-		mv "${HOME}/.${rs_fmt}" "${HOME}/.${rs_fmt}.bak"
-            fi
-            status "Creating link for ~/.rustfmt.toml"
-            ln -s ${config_dir}/${d}/${rs_fmt} ${HOME}/.${rs_fmt}
-            ;;
-
         *"karabiner")
             # Only link on macOS
-            if [[ ! ${OSTYPE} == "darwin"* ]];then
-                continue
-            fi
-
             local f="karabiner"
+            [[ ! ${OSTYPE} == "darwin"* ]] && continue
             # Create directory if not present 
-            if [ ! -e ${usr_conf}/${f} ];then
-                mkdir -p ${usr_conf}/${f}
-            # Backup config if present
-            elif [ -f "${usr_conf}/${f}/${f}.json" ];then
-                backup "Backing up karabiner.json"
+            [ ! -e ${usr_conf}/${f} ] && mkdir -p ${usr_conf}/${f}
+
+            # Backup pre-exisiting file, if present
+            if [ -f "${usr_conf}/${f}/${f}.json" ];then
+                debug "Backing up resource... ${f}.json -> ${f}.json.bak"
                 mv "${usr_conf}/${f}/${f}.json" "${usr_conf}/${f}/${f}.json.bak" 
             fi
 
             # Link: keybindings
-            status "Creating link for ~/.config/${f}/${f}.json"
-            ln -s "${config_dir}/${f}/${f}.json" "${usr_conf}/${f}/${f}.json"
+            info "Creating link for... ${usr_conf}/${f}/${f}.json"
+            symlink "${config_dir}/${f}/${f}.json" "${usr_conf}/${f}/${f}.json"
             ;;
         *"base16_color_space.sh")
-            local theme_conf="${HOME}/.config/base16_color_space.sh"
-            status "Creating link for ~/.config/base16_color_space.sh"
-            ln -s ${d} ${theme_conf}
+            local theme_conf="${usr_conf}/base16_color_space.sh"
+            info "Creating link for ${usr_conf}/base16_color_space.sh"
+            symlink ${d} ${theme_conf}
             ;; 
         *)
             continue
@@ -195,8 +171,6 @@ function link_config_to_local {
    done
 
 }
-
-
 
 function set_theme {
     BASE16_COLOR_SPACE="${HOME}/.config/base16-color-space.sh"
@@ -221,7 +195,7 @@ function config_shell {
         echo "PROMPT=\"%(?:%{\$fg_bold[green]%}%m ➜:%{\$fg_bold[red]%}%m ➜)\"" >> ${HOME}/.${SH}rc
         echo "PROMPT+=' %{\$fg[cyan]%}%c%{\$reset_color%} \$(git_prompt_info)'" >> ${HOME}/.${SH}rc
     else
-        exists "Custom PROMPT already set"
+        error "Custom PROMPT already set"
     fi
 }
 
