@@ -1,7 +1,10 @@
-export ZSH_CONFIG_DIR=${HOME}/.config/zsh
-source "${ZSH_CONFIG_DIR}/history.zsh"       # term-based history
-source "${ZSH_CONFIG_DIR}/completion.zsh"    # tab-completion
-source "${ZSH_CONFIG_DIR}/key-bindings.zsh"  # conditional history (e.g., git <UP_KEY>)
+export ZSH="${HOME}/.oh-my-zsh"
+source "${ZSH}/oh-my-zsh.sh"
+
+#export ZSH="${HOME}/.config/zsh"
+#source "${ZSH}/history.zsh"       # term-based history
+#source "${ZSH}/completion.zsh"    # tab-completion
+#source "${ZSH}/key-bindings.zsh"  # conditional history (e.g., git <UP_KEY>)
 
 export STARSHIP_CONFIG=${HOME}/.config/starship.toml
 

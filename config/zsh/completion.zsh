@@ -1,4 +1,7 @@
+# fixme - the load process here seems a bit bizarre
 zmodload -i zsh/complist
+
+WORDCHARS=''
 
 unsetopt menu_complete   # do not autoselect the first completion entry
 unsetopt flowcontrol
@@ -6,14 +9,33 @@ setopt auto_menu         # show completion menu on successive tab press
 setopt complete_in_word
 setopt always_to_end
 
-# Case and hyphen insensitive completion
+# should this be in keybindings?
+bindkey -M menuselect '^o' accept-and-infer-next-history
 zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+
+# case insensitive (all), partial-word and substring completion
+if [[ "$CASE_SENSITIVE" = true ]]; then
+  zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
+else
+  if [[ "$HYPHEN_INSENSITIVE" = true ]]; then
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+  else
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+  fi
+fi
+unset CASE_SENSITIVE HYPHEN_INSENSITIVE
+
 # Complete . and .. special directories
 zstyle ':completion:*' special-dirs true
+
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+
+if [[ "$OSTYPE" = solaris* ]]; then
+  zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm"
+else
+  zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+fi
 
 # disable named-directories autocompletion
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
@@ -43,6 +65,10 @@ if [[ $COMPLETION_WAITING_DOTS = true ]]; then
     zle redisplay
   }
   zle -N expand-or-complete-with-dots
+  # Set the function as the default tab completion widget
+  bindkey -M emacs "^I" expand-or-complete-with-dots
+  bindkey -M viins "^I" expand-or-complete-with-dots
+  bindkey -M vicmd "^I" expand-or-complete-with-dots
 fi
 
 # automatically load bash completion functions
