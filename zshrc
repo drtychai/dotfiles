@@ -44,7 +44,3 @@ ${HOME}/.config/base16_color_space.sh
 #     zr /foo     # remove /foo from the database
 eval "$(zoxide init posix --hook prompt)"
 eval "$(starship init zsh)"
-
-# Custom zsh prompt
-PROMPT="%(?:%{$fg_bold[green]%}%m ➜:%{$fg_bold[red]%}%m ➜)"
-PROMPT+=' %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'

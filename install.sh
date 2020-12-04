@@ -193,15 +193,6 @@ function config_shell {
     # Clone Tmux Plugin Manager
     rm -rf ${HOME}/.tmux/plugins/tpm 2>&1 > /dev/null
     git clone --quiet https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
-
-    # Custom zsh prompt
-    if [ "${SH}" == "zsh" ] && ! grep -q 'PROMPT+' ${HOME}/.${SH}rc;then
-        echo -ne "\n# Custom zsh prompt\n" >> ${HOME}/.${SH}rc
-        echo "PROMPT=\"%(?:%{\$fg_bold[green]%}%m ➜:%{\$fg_bold[red]%}%m ➜)\"" >> ${HOME}/.${SH}rc
-        echo "PROMPT+=' %{\$fg[cyan]%}%c%{\$reset_color%} \$(git_prompt_info)'" >> ${HOME}/.${SH}rc
-    else
-        error "Custom PROMPT already set"
-    fi
 }
 
 # SymLink dotfiles and configs
