@@ -1,14 +1,13 @@
-# Path to your oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
-plugins=(git)
+export ZSH_CONFIG_DIR=${HOME}/.config/zsh
+source "${ZSH_CONFIG_DIR}/history.zsh"       # term-based history
+source "${ZSH_CONFIG_DIR}/completion.zsh"    # tab-completion
+source "${ZSH_CONFIG_DIR}/key-bindings.zsh"  # conditional history (e.g., git <UP_KEY>)
 
-# oh-mu-zsh, rust, and go environment vars
-source $ZSH/oh-my-zsh.sh
+export STARSHIP_CONFIG=${HOME}/.config/starship.toml
 
-export GOOS=`uname | awk '{print tolower($0)}'`
 export GOPATH=$HOME/go
 export GOROOT=/usr/local/opt/go/libexec
+export GOOS=`uname | awk '{print tolower($0)}'`
 
 # Set up aliases
 [ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
@@ -16,18 +15,12 @@ export GOROOT=/usr/local/opt/go/libexec
 [ -f ${HOME}/.cargo/env ] && source ${HOME}/.cargo/env
 
 # Add dotfiles bin to PATH
-export PATH=${PATH}:${pwd}/bin
-export PATH=${PATH}:/usr/local/sbin
-export PATH=${PATH}:${HOME}/bin/depot_tools
-export PATH=${PATH}:${GOPATH}/bin
-export PATH=${PATH}:${GOROOT}/bin
-export PATH=$PATH:/Users/bynx/opt/dotfiles/bin
+export PATH=${PATH}:/usr/local/sbin                   
+export PATH=${PATH}:${HOME}/bin:${HOME}/bin/depot_tools
+export PATH=${PATH}:${HOME}/opt/sources/dotfiles/bin
+export PATH=${PATH}:${GOPATH}/bin:${GOROOT}/bin
 
-# Custom zsh prompt
-PROMPT="%(?:%{$fg_bold[green]%}%m ➜:%{$fg_bold[red]%}%m ➜)"
-PROMPT+=' %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
-
-# Terminal colors
+# Terminal colors (runs base16 script)
 ${HOME}/.config/base16_color_space.sh
 
 # Wasmer
@@ -44,5 +37,8 @@ ${HOME}/.config/base16_color_space.sh
 #     za /foo     # add /foo to the database
 #     zr /foo     # remove /foo from the database
 eval "$(zoxide init posix --hook prompt)"
+eval "$(starship init zsh)"
 
-#eval "$(starship init zsh)"
+# Custom zsh prompt
+PROMPT="%(?:%{$fg_bold[green]%}%m ➜:%{$fg_bold[red]%}%m ➜)"
+PROMPT+=' %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'

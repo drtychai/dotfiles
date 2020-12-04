@@ -164,6 +164,11 @@ function link_config_to_local {
             info "Creating link for ${usr_conf}/base16_color_space.sh"
             symlink ${d} ${theme_conf}
             ;; 
+        *"starship.toml")
+            local theme_conf="${usr_conf}/starship.toml"
+            info "Creating link for ${usr_conf}/starship.toml"
+            symlink ${d} ${theme_conf}
+            ;; 
         *)
             continue
             ;;
