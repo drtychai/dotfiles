@@ -9,10 +9,16 @@ export GOPATH=$HOME/go
 export GOROOT=/usr/local/opt/go/libexec
 export GOOS=`uname | awk '{print tolower($0)}'`
 
+# Install rust, if missing
+[[ ! -e `which cargo` ]] && curl --proto "=https" --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
+
 # Set up aliases
 [ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
 [ -f ${HOME}/.bash_aliases ] && source ${HOME}/.bash_aliases
 [ -f ${HOME}/.cargo/env ] && source ${HOME}/.cargo/env
+
+# Install starship, if missing
+[[ ! -e `which starship` ]] && cargo install starship
 
 # Add dotfiles bin to PATH
 export PATH=${PATH}:/usr/local/sbin                   
