@@ -5,6 +5,7 @@ set -e
 L_GREEN='\033[1;32m'
 L_BLUE='\033[1;34m'
 L_RED='\033[1;31m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # List of symlinks to remove
@@ -15,6 +16,7 @@ declare -a LINKED=(
     "${HOME}/.tmux.conf"
     "${HOME}/.vim"
     "${HOME}/.vimrc"
+    "${HOME}/.config/zsh"
     "${HOME}/.config/cargo"
     "${HOME}/.config/karabiner/karabiner.json"
     "${HOME}/.config/base16_color_space.sh"
@@ -23,14 +25,14 @@ declare -a LINKED=(
 )
 
 # Logging
-function info  { echo -e "${L_GREEN}[*]${NC}" $@; }
-function debug { echo -e "${L_BLUE}[+]${NC}" $@; }
+function info  { echo -e "${L_GREEN}[+]${NC}" $@; }
+function debug { echo -e "${L_BLUE}[*]${NC}" $@; }
 function error { echo -e "${L_RED}[-]${NC}" $@; }
 function fatal { echo -e "${L_RED}[-]${NC}" $@ && exit 1;}
 
 function clean_symlink {
     local trgt=${1}
-    info "Unlinking resource... ${f}"
+    debug "Unlinking resource... ${f}"
     case "`uname -s`" in
         Darwin*)
             rm -r ${trgt} && unlink -r ${trgt} 
@@ -57,7 +59,7 @@ function has_backup {
 function clean_local_env {
     for f in "${LINKED[@]}"; do
         # Check if resource exists
-        [ ! -L ${f} ] && info "Resource does not exist, skipping... ${f}" && continue
+        [ ! -L ${f} ] && debug "Resource does not exist, skipping... ${f}" && continue
         
         # Recursively attempt to remove all symlinks
         [[ ! `clean_symlink ${f}` ]] && clean_local_env
@@ -65,3 +67,5 @@ function clean_local_env {
 }
 
 clean_local_env 2>/dev/null
+
+info "dotfile cleanup complete"

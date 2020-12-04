@@ -5,6 +5,7 @@ set -e
 L_GREEN='\033[1;32m'
 L_BLUE='\033[1;34m'
 L_RED='\033[1;31m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Globals
@@ -12,9 +13,11 @@ SH=`echo ${SHELL} | cut -d '/' -f3`
 DIR="$(cd "$(dirname "$0")" ; pwd -P)"
 
 # Logging
-function info  { echo -e "${L_GREEN}[*]${NC}" $@; }
-function debug { echo -e "${L_BLUE}[-]${NC}" $@; }
-function error { echo -e "${L_RED}[-]${NC}" $@; }
+function info  { echo -e "${L_GREEN}[+]${NC}" $@; }
+function debug { echo -e "${L_BLUE}[*]${NC}" $@; }
+function error { echo -e "${BLUE}[-]${NC}" $@; }
+function fatal { echo -e "${L_RED}[-]${NC}" $@ && exit 1; }
+function prompt  { echo -ne "${L_GREEN}[+]${NC} $@ "; }
 
 # Create a symbolic link from the file/dir in our repo to
 # the local environment. If file currently exists, attempt to
@@ -70,12 +73,24 @@ function map_aliases {
         error ".gitaliases already in .gitconfig"
     fi
 
-    # Install rust aliases
-    if ! grep -q rs-aliases ${HOME}/.cargo/env 2>/dev/null; then
-        echo "source ${DIR}/config/cargo/rs-aliases" >> ${HOME}/.cargo/env
-    else
-        error "rust aliases already in .cargo/env"
-    fi
+    # Install all rust cli tools, if approved
+    prompt "Install missing rust binaries? [y/N]:"
+    read response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            if ! grep -q rs-aliases ${HOME}/.cargo/env 2>/dev/null; then
+                echo "source ${DIR}/config/cargo/rs-aliases" >> ${HOME}/.cargo/env
+            else
+                error "rust aliases already in .cargo/env"
+            fi
+                
+            local rs_bins="`cat ${DIR}/config/cargo/rs-aliases | cut -d '=' -f 2 | xargs`"
+            cargo -q install ${rs_bins} 2>/dev/null
+            ;;
+        *)
+            continue
+            ;;
+    esac
 }
 
 function map_symlinks {
@@ -129,7 +144,7 @@ function link {
                 continue
             fi
         fi
-        info "Creating link for .${filename}"
+        debug "Creating link for .${filename}"
         symlink ${DIR}/${filename} ${HOME}/.${filename}
     fi
 }
@@ -142,6 +157,10 @@ function link_config_to_local {
     # Setup symlinks
     for d in ${config_dir}/*; do
       case "${d}" in
+        *"zsh")
+            local conf_dir="${usr_conf}/zsh"
+            symlink ${d} ${conf_dir}
+            ;;
         *"karabiner")
             # Only link on macOS
             local f="karabiner"
@@ -156,18 +175,18 @@ function link_config_to_local {
             fi
 
             # Link: keybindings
-            info "Creating link for... ${usr_conf}/${f}/${f}.json"
+            debug "Creating link for... ${usr_conf}/${f}/${f}.json"
             symlink "${config_dir}/${f}/${f}.json" "${usr_conf}/${f}/${f}.json"
             ;;
         *"base16_color_space.sh")
-            local theme_conf="${usr_conf}/base16_color_space.sh"
-            info "Creating link for ${usr_conf}/base16_color_space.sh"
-            symlink ${d} ${theme_conf}
+            local conf="${usr_conf}/base16_color_space.sh"
+            debug "Creating link for ${conf}"
+            symlink ${d} ${conf}
             ;; 
         *"starship.toml")
-            local theme_conf="${usr_conf}/starship.toml"
-            info "Creating link for ${usr_conf}/starship.toml"
-            symlink ${d} ${theme_conf}
+            local conf="${usr_conf}/starship.toml"
+            debug "Creating link for ${conf}"
+            symlink ${d} ${conf}
             ;; 
         *)
             continue
@@ -200,3 +219,5 @@ map_symlinks
 map_aliases
 map_local_bins
 config_shell
+
+info "dotfile installation complete"

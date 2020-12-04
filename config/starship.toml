@@ -1,35 +1,34 @@
+# starship zsh config
+format = """\
+    $username\
+    $hostname\
+    $directory\
+    $git_branch\
+    $git_commit\
+    $git_state\
+    $git_status\
+    $cmake \
+    $golang\
+    $java\
+    $nodejs\
+    $rust\
+    $swift\
+    $line_break\
+    $status\
+    $character"""
 add_newline = false
 
 [character]
-disabled = false
-success_symbol = "[ ➜](bold bright-green) "
-error_symbol = "[ ✗](bold bright-red) "
+success_symbol = "[ ➜](bold bright-green)"
+error_symbol   = "[ ✗](bold bright-red)"
 
 [username]
-disabled = false
-show_always = true
-style_user = "bold italic #87a752"
-style_root = "bold italic red"
 format = "[$user@]($style)"
+style_user  = "bold italic #87a752"
+show_always = true
 
 [hostname]
-disabled = false
-ssh_only = false
-trim_at = "."
-style = "bold italic #87A752"
 format = "[$hostname]($style) "
-
-[aws]
-disabled = true
-
-[cmd_duration]
-disabled = true
-
-[package]
-disabled = true
-
-[rust]
-disabled = false
-
-[python]
-disabled = true
+style  = "bold italic #87A752"
+trim_at  = "."
+ssh_only = false

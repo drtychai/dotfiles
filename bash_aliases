@@ -1,7 +1,9 @@
 # Navigation aliases
 alias ..="cd .."
 alias ...="cd ../.."
-alias ....="cd ../../.."
+#alias ....="cd ../../.."
+#alias .....="cd ../../../.."
+#alias ......="cd ../../../../.."
 
 # ls alias
 alias l='ls -l'
@@ -14,4 +16,7 @@ alias gdb='gdb -q'
 alias c='clear'
 
 # vim
-alias vi='`which vim`'
+alias vi='vim'
+
+# quick notes
+alias nt="echo \[`date '+%Y-%m-%d %H:%M:%S'`\]  $@ >> ${HOME}/.notes.md"
