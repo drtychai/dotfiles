@@ -30,8 +30,7 @@ function symlink {
         debug "Manually unlinking ${trgt_name}..."
         if ! `unlink -rf ${trgt_name}`; then
             error "Cannot manually unlink..."
-            #exit 1
-            continue
+            return
         fi
         debug "Performing recursive call to symlink fn..."
         symlink ${trgt_name}
@@ -141,11 +140,11 @@ function link {
                 mv ${HOME}/.${filename} $debug/
             else
                 error ".${filename} is already symlinked"
-                continue
             fi
+        else
+            debug "Creating link for .${filename}"
+            symlink ${DIR}/${filename} ${HOME}/.${filename}
         fi
-        debug "Creating link for .${filename}"
-        symlink ${DIR}/${filename} ${HOME}/.${filename}
     fi
 }
 
