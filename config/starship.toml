@@ -10,7 +10,6 @@ format = """\
     $cmake \
     $golang\
     $java\
-    $nodejs\
     $rust\
     $swift\
     $line_break\

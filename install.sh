@@ -28,10 +28,11 @@ function symlink {
     local trgt_name=${2}
     if ! `ln -s ${src_name} ${trgt_name}`; then
         debug "Manually unlinking ${trgt_name}..."
-        if ! `unlink -rf ${trgt_name}`; then
-            error "Cannot manually unlink..."
-            return
-        fi
+        [ unlink ${trgt_name} ] && return
+        #if ! `unlink ${trgt_name}`; then
+        #    error "Cannot manually unlink..."
+        #    return
+        #fi
         debug "Performing recursive call to symlink fn..."
         symlink ${trgt_name}
     fi

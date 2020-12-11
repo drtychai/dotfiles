@@ -1,3 +1,8 @@
+# Terminal
+export LANG=en_US.UTF-8
+[ "${OSTYPE}" == "linux"* ] && export TERM=screen-256color
+[ "${OSTYPE}" == "darwin"* ] && export TERM=xterm-256color 
+
 # Navigation aliases
 alias ..="cd .."
 alias ...="cd ../.."

@@ -36,6 +36,9 @@ Plug 'fatih/vim-go'
 " Language : Rust
 Plug 'rust-lang/rust.vim'
 
+" Language : Cranelift IR
+Plug 'CraneStation/cranelift.vim'
+
 " Language : Markdown
 Plug 'jtratner/vim-flavored-markdown'
 

@@ -38,7 +38,7 @@ function clean_symlink {
             rm -r ${trgt} && unlink -r ${trgt} 
             ;;
         Linux*)
-            unlink -r ${trgt}
+            unlink ${trgt}
             ;;
         *) 
             fatal "OS not supported...exiting..."

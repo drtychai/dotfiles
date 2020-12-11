@@ -1,1 +1,1 @@
-source /Users/bynx/opt/dotfiles/config/cargo/rs-aliases
+source ${HOME}/opt/sources/dotfiles/config/cargo/rs-aliases
