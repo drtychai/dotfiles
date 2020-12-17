@@ -47,3 +47,7 @@ ${HOME}/.config/base16_color_space.sh
 #     zr /foo     # remove /foo from the database
 eval "$(zoxide init posix --hook prompt)"
 eval "$(starship init zsh)"
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:$PATH"

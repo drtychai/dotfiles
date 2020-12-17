@@ -178,6 +178,23 @@ function link_config_to_local {
             debug "Creating link for... ${usr_conf}/${f}/${f}.json"
             symlink "${config_dir}/${f}/${f}.json" "${usr_conf}/${f}/${f}.json"
             ;;
+        *"zathura")
+            # Only link on macOS
+            local f="zathura"
+            [[ ! ${OSTYPE} == "darwin"* ]] && continue
+            # Create directory if not present 
+            [ ! -e ${usr_conf}/${f} ] && mkdir -p ${usr_conf}/${f}
+
+            # Backup pre-exisiting file, if present
+            if [ -f "${usr_conf}/${f}/${f}rc" ];then
+                debug "Backing up resource... ${f}rc -> ${f}rc.bak"
+                mv "${usr_conf}/${f}/${f}rc" "${usr_conf}/${f}/${f}rc.bak" 
+            fi
+
+            # Link: keybindings
+            debug "Creating link for... ${usr_conf}/${f}/${f}rc"
+            symlink "${config_dir}/${f}/${f}rc" "${usr_conf}/${f}/${f}rc"
+            ;;
         *"base16_color_space.sh")
             local conf="${usr_conf}/base16_color_space.sh"
             debug "Creating link for ${conf}"

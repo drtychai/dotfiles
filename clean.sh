@@ -21,6 +21,7 @@ declare -a LINKED=(
     "${HOME}/.config/karabiner/karabiner.json"
     "${HOME}/.config/base16_color_space.sh"
     "${HOME}/.config/starship.toml"
+    "${HOME}/.config/zathura"
     "${HOME}/.rustfmt.toml"
 )
 
