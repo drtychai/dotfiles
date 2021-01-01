@@ -23,5 +23,8 @@ alias c='clear'
 # vim
 alias vi='vim'
 
+# tectonic
+alias tt='tectonic'
+
 # quick notes
 alias nt="echo \[`date '+%Y-%m-%d %H:%M:%S'`\]  $@ >> ${HOME}/.notes.md"

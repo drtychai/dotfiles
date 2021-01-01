@@ -85,55 +85,49 @@ function map_aliases {
             fi
                 
             local rs_bins="`cat ${DIR}/config/cargo/rs-aliases | cut -d '=' -f 2 | xargs`"
-            cargo -q install ${rs_bins} 2>/dev/null
+            for bin in "${rs_bins}";do 
+	        cargo install ${bin}
+	    done
             ;;
         *)
-            continue
             ;;
     esac
 }
 
 function map_symlinks {
     # Excluded files
-    ###declare -a excluded=("README.md" "bin" "iterm2" "install.sh" "clean.sh" "config")
+    declare -a EXCLUDED=("README.md" "bin" "iterm2" "install.sh" "clean.sh")
+
     # Setup symlinks
-    for file in ${DIR}/*; do
-      case "${file}" in
-        *"README.md")
-          #echo $file
-          continue
-          ;;
-        *"bin")
-          #echo $file
-          continue
-          ;;
-        *"iterm2")
-          #echo $file
-          continue
-          ;;
-        *".sh")
-          #echo $file
-          continue
-          ;;
-        *"config")
-          link_config_to_local
-          ;;
-        *)
-          # Bail out for empty strings
-          if [ -z ${file} ]; then
-              continue
-          else
-              link
-          fi
-          ;;
-      esac
+    for file in `ls ${DIR}`; do
+        IFS=@
+        case "@${EXCLUDED[*]}@" in
+          (*"@${file}@"*)
+            continue
+            ;;
+          (*) # current file is not blacklisted; hence we must symlink it
+            case ${file} in
+              *"config")
+                link_config_to_local
+                ;;
+              *)
+                # Bail out for empty strings
+                if [ -z ${file} ]; then
+                    continue
+                else
+                    link
+                fi
+                ;;
+            esac
+            ;;
+        esac
    done
 }
 
 function link {
-    local filename="$(basename $file)"
+    local filename="$(basename $0)"
     local debug="${DIR}/.debug"
-    if [[ "${filename}" != "$(basename $0)" ]]; then
+    if [[ "${filename}" != "$(basename $file)" ]]; then
         if [ -e ${HOME}/.${filename} ]; then
             if ! [ -h ${HOME}/.${filename} ]; then
                 mkdir -p $debug
@@ -226,12 +220,19 @@ function config_shell {
     # Install vim plugins
     vim +'PlugInstall --sync' +qa
 
+    ln -s ${DIR}/vimrc ${HOME}/.vimrc
+    ln -s ${DIR}/vim ${HOME}/.vim
+
+    ln -s ${DIR}/tmux.conf ${HOME}/.tmux.conf
+
     # Clone Tmux Plugin Manager
     rm -rf ${HOME}/.tmux/plugins/tpm 2>&1 > /dev/null
     git clone --quiet https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 }
 
 # SymLink dotfiles and configs
+ln -s ${DIR}/bash_aliases ${HOME}/.bash_aliases
+ln -s ${DIR}/zshrc ${HOME}/.zshrc
 map_symlinks
 map_aliases
 map_local_bins
