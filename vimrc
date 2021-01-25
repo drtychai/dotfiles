@@ -36,8 +36,17 @@ Plug 'fatih/vim-go'
 " Language : Rust
 Plug 'rust-lang/rust.vim'
 
+" Language : Toml
+Plug 'cespare/vim-toml'
+
 " Language : Cranelift IR
 Plug 'CraneStation/cranelift.vim'
+
+" Language : Ungrammar
+Plug 'drtychai/ungrammar.vim'
+
+" Language : FuzzIL
+Plug 'drtychai/fuzzil.vim'
 
 " Language : Markdown
 Plug 'jtratner/vim-flavored-markdown'
@@ -297,7 +306,6 @@ let g:deoplete#enable_at_startup = 1
 " Tmuxline (Configures Tmux's statusbar)
 :let g:tmuxline_preset = 'powerline'
 :let g:tmuxline_theme = 'zenburn'
-":let g:tmuxline_file
 
 " tagbar
 :nnoremap <leader>z :TagbarToggle<CR>
@@ -341,6 +349,7 @@ call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 
 " ALE
 let g:ale_linters = {
+\   'rust': ['analyzer'],
 \   'javascript': ['eslint'],
 \   'kotlin': ['klint'],
 \}

@@ -29,12 +29,6 @@ function symlink {
     if ! `ln -s ${src_name} ${trgt_name}`; then
         debug "Manually unlinking ${trgt_name}..."
         [ unlink ${trgt_name} ] && return
-        #if ! `unlink ${trgt_name}`; then
-        #    error "Cannot manually unlink..."
-        #    return
-        #fi
-        debug "Performing recursive call to symlink fn..."
-        symlink ${trgt_name}
     fi
 }
 
@@ -102,10 +96,10 @@ function map_symlinks {
     for file in `ls ${DIR}`; do
         IFS=@
         case "@${EXCLUDED[*]}@" in
-          (*"@${file}@"*)
+          *"@${file}@"*)
             continue
             ;;
-          (*) # current file is not blacklisted; hence we must symlink it
+          *) # current file is not blacklisted; hence we must symlink it
             case ${file} in
               *"config")
                 link_config_to_local
@@ -169,7 +163,7 @@ function link_config_to_local {
             fi
 
             # Link: keybindings
-            debug "Creating link for... ${usr_conf}/${f}/${f}.json"
+            debug "Creating link for ${usr_conf}/${f}/${f}.json"
             symlink "${config_dir}/${f}/${f}.json" "${usr_conf}/${f}/${f}.json"
             ;;
         *"zathura")
@@ -186,7 +180,7 @@ function link_config_to_local {
             fi
 
             # Link: keybindings
-            debug "Creating link for... ${usr_conf}/${f}/${f}rc"
+            debug "Creating link for ${usr_conf}/${f}/${f}rc"
             symlink "${config_dir}/${f}/${f}rc" "${usr_conf}/${f}/${f}rc"
             ;;
         *"base16_color_space.sh")
@@ -230,12 +224,18 @@ function config_shell {
     git clone --quiet https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 }
 
+# Make ${HOME}/.config and ${HOME}/.cargo if not present
+mkdir -p ${HOME}/.config
+mkdir -p ${HOME}/.cargo
+
 # SymLink dotfiles and configs
-ln -s ${DIR}/bash_aliases ${HOME}/.bash_aliases
-ln -s ${DIR}/zshrc ${HOME}/.zshrc
+symlink ${DIR}/bash_aliases ${HOME}/.bash_aliases
+symlink ${DIR}/zshrc ${HOME}/.zshrc
+
 map_symlinks
 map_aliases
 map_local_bins
 config_shell
+unlink ${HOME}/.install.sh 2>/dev/null
 
 info "dotfile installation complete"
