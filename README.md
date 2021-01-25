@@ -1,13 +1,10 @@
-dotfiles
-========
+# dotfiles
+My collection of dotfiles for vim, zsh, tmux, karabiner, zathura, and iterm2.
 
-My collection of dotfiles for vim, bash, and tmux.
-
-Running `init.sh` will symlink _$HOME/.{file}_ to _$HOME/dotfiles/{file}_, and back up the original in _$HOME/dotfiles.bak/_ as well as pull in all the vim plugin submodules.
-
-Make sure that _.bash_aliases_ is called from your _.bashrc_:
-
+## Installation
 ```bash
-echo "if [ -f $HOME/.bash_aliases ]; then . $HOME/.bash_aliases; fi" >> ~/.bashrc
-```
+mkdir -p ${HOME}/opt/sources
+git clone https://github.com/drtychai/dotfiles ${HOME}/opt/sources/dotfiles
 
+cd ${HOME}/opt/sources/dotfiles && ./install./sh
+```
