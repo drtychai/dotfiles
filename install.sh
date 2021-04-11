@@ -170,7 +170,6 @@ function link {
         else
 	    case "${filename}" in
               *"install"*)
-                  continue
                   ;;
               *)
                   symlink ${DIR}/${filename} ${HOME}/.${filename}
