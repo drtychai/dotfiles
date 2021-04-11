@@ -1,5 +1,6 @@
 alias cat=bat
 alias ls=exa
+alias wc=cw
 #alias find=fd-find
 alias ps=procs
 #alias sed=sd
