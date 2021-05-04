@@ -94,22 +94,13 @@ function map_aliases {
                 echo "source ${DIR}/config/cargo/rs-aliases" >> ${HOME}/.cargo/env
             #else error "rust aliases already in .cargo/env"
             fi
-                
-            declare -a RS_BINS=(
-                "exa"
-                "bat" 
-                "zoxide" 
-                "starship" 
-                "tokei" 
-                "du-dust" 
-                "fd-find" 
-                "sd" 
-                "grex" 
-                "ripgrep"
-                "bottom"
-                "cw"
-            )
-	        cargo install -j`nproc` ${RS_BINS[@]}
+            
+            debug "Installing rust binaries..."
+
+            # Array containing all the binaries we expect on the machine    
+            declare -a RS_BINS=( "`cat ${DIR}/config/cargo/bin.lst | xargs`" )
+            sh -c "cargo install -q -j\`nproc\` ${RS_BINS[@]} 2>&1" | tail -n 1 | sed 's/^\s\+//'
+            
             ;;
         [nN][oO]|[nN])
             ;;
