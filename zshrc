@@ -1,6 +1,6 @@
 ########## Dotfiles ##########
 function append_path() {
-    local paths=( "${1}" )
+    local paths=( "${@}" )
 
     # If path substring is not in current env PATH, then append
     for p in "${paths[@]}"; do
@@ -37,14 +37,14 @@ export GOOS="`uname | awk '{print tolower($0)}'`"
 export STARSHIP_CONFIG="${HOME}/.config/starship.toml"
 
 # Prep shell env
-declare -a LOCAL_PATHS=( \
-    "/usr/local/bin" \
-    "/usr/local/sbin" \
-    "/opt/depot_tools" \
-    "${HOME}/opt/sources/dotfiles/bin" \
-    "${GOPATH}/bin" \
-    "${GOROOT}/bin" \
-    #"${HOME}/.wasmtime/bin" \
+declare -a LOCAL_PATHS=(
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    "/opt/depot_tools"
+    "${HOME}/opt/sources/dotfiles/bin"
+    "${GOPATH}/bin"
+    "${GOROOT}/bin"
+    #"${HOME}/.wasmtime/bin"
 ) && append_path ${LOCAL_PATHS}
 
 # Terminal colors (runs base16 script)
