@@ -87,18 +87,13 @@ function map_aliases {
     # Default to skip installation if timeout is triggered 
     prompt "Install modern CLI (rust) binaries? [y/N]:"
     read -t 5 response;
-
+   
     case "${response}" in
         [yY][eE][sS]|[yY]) 
-            if ! grep -q rs-aliases ${HOME}/.cargo/env 2>/dev/null; then
-                echo "source ${DIR}/config/cargo/rs-aliases" >> ${HOME}/.cargo/env
-            #else error "rust aliases already in .cargo/env"
-            fi
-            
             debug "Installing rust binaries..."
 
             # Array containing all the binaries we expect on the machine    
-            declare -a RS_BINS=( "`cat ${DIR}/config/cargo/bin.lst | xargs`" )
+            declare -a RS_BINS=( "`cat ${DIR}/config/cargo/cli-tools.lst | xargs`" )
             sh -c "cargo install -q -j\`nproc\` ${RS_BINS[@]} 2>&1" | tail -n 1 | sed 's/^\s\+//'
             
             ;;
@@ -107,6 +102,15 @@ function map_aliases {
         *)
             ;;
     esac
+
+    # Add rust cli bins to our path
+    # This is where we've aliases some cmds
+    if ! grep -q rs-aliases ${HOME}/.cargo/env 2>/dev/null; then
+        echo "source ${DIR}/config/cargo/rs-aliases" >> ${HOME}/.cargo/env
+    #else error "rust aliases already in .cargo/env"
+    fi
+ 
+
 }
 
 function map_symlinks {
@@ -237,7 +241,7 @@ function set_theme {
 function config_shell {
     # Pull in submodules
     pushd ${DIR} >/dev/null
-    git submodule init && git submodule update
+    git submodule update --init --recursive
     popd >/dev/null
 
     # Install vim plugins

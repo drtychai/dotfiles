@@ -41,11 +41,15 @@ declare -a LOCAL_PATHS=(
     "/usr/local/bin"
     "/usr/local/sbin"
     "/opt/depot_tools"
-    "${HOME}/opt/sources/dotfiles/bin"
+    "${HOME}/bin"
     "${GOPATH}/bin"
     "${GOROOT}/bin"
     #"${HOME}/.wasmtime/bin"
 ) && append_path ${LOCAL_PATHS}
+
+# For macOS, give priority to non-Apple LLVM toolchain
+[[ "$(uname)" == "Darwin" ]] \
+    && export PATH="$(stat -f /usr/local/Cellar/llvm/*/bin):${PATH}" 
 
 # Terminal colors (runs base16 script)
 ${HOME}/.config/base16_color_space.sh
@@ -61,3 +65,5 @@ ${HOME}/.config/base16_color_space.sh
 #     zr /foo     # remove /foo from the database
 eval "$(zoxide init posix --hook prompt)"
 eval "$(starship init zsh)"
+# Add dotfiles bin to PATH
+export PATH=${PATH}:/Users/bynx/opt/sources/dotfiles/bin
