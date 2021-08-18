@@ -247,10 +247,15 @@ function config_shell {
     # Install vim plugins
     vim +'PlugInstall --sync' +qa
 
+    # vim config and cloned plug repos
     ln -s ${DIR}/vimrc ${HOME}/.vimrc
     ln -s ${DIR}/vim ${HOME}/.vim
 
+    # tmux bindings config
     ln -s ${DIR}/tmux.conf ${HOME}/.tmux.conf
+
+    # cargo fmt config
+    ln -s ${DIR}/rustfmt.toml ${HOME}/.rustfmt.toml
 
     # Clone Tmux Plugin Manager
     rm -rf ${HOME}/.tmux/plugins/tpm 2>&1 > /dev/null
