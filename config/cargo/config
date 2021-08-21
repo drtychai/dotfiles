@@ -1,0 +1,40 @@
+# https://doc.rust-lang.org/cargo/reference/config.html
+[alias]
+b = "build"
+t = "test"
+c = "check"
+r = "run"
+rr = "run --release"
+cc = "clean"
+
+[build]
+rustflags = [
+#  "-C", "linker-plugin-lto",
+#  "-C", "opt-level=2",
+]
+
+[target.x86_64-apple-darwin]
+#linker = "ld64.lld"
+rustflags = [
+#    "-Z", "dumpast",
+]
+
+[target.x86_64-unknown-linux-gnu]
+linker = "ld.lld"
+rustflags = [
+    "-L", "/usr/lib/x86_64-linux-gnu",
+]
+
+[target.x86_64-unknown-linux-musl]
+linker = "ld.lld"
+rustflags = [
+    "-L", "/usr/lib/x86_64-unknown-linux-musl",
+    "-C", "link-arg=-lmusl-gcc",
+    "-C", "link-arg=-lgcc",
+]
+
+[term]
+verbose = false        # whether cargo provides verbose output
+color = 'auto'         # whether cargo colorizes output
+progress.when = 'auto' # whether cargo shows progress bar
+#progress.width = 80    # width of progress bar
