@@ -186,6 +186,18 @@ function link_config_to_local {
             local conf_dir="${usr_conf}/zsh"
             symlink ${d} ${conf_dir}
             ;;
+        *"i3")
+            local conf_dir="${usr_conf}/i3"
+            symlink ${d} ${conf_dir}
+            ;;
+        *"i3status-rust")
+            local conf_dir="${usr_conf}/i3status-rust"
+            symlink ${d} ${conf_dir}
+            ;;
+        *"alacritty")
+            local conf_dir="${usr_conf}/alacritty"
+            symlink ${d} ${conf_dir}
+            ;;
         *"karabiner")
             # Only link on macOS
             local f="karabiner"
@@ -224,6 +236,10 @@ function link_config_to_local {
             ;; 
         *"starship.toml")
             local conf="${usr_conf}/starship.toml"
+            symlink ${d} ${conf}
+            ;; 
+        *"setup_env.sh")
+            local conf="${usr_conf}/setup_env.sh"
             symlink ${d} ${conf}
             ;; 
         *)

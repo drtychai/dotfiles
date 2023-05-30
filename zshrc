@@ -1,5 +1,5 @@
 ########## Dotfiles ##########
-function append_path() {
+function append_to_path() {
     local paths=( "${@}" )
 
     # If path substring is not in current env PATH, then append
@@ -8,13 +8,11 @@ function append_path() {
     done
 }
 
-export ZSH="${HOME}/.oh-my-zsh"
-source "${ZSH}/oh-my-zsh.sh"
-
-#export ZSH="${HOME}/.config/zsh"
-#source "${ZSH}/history.zsh"       # term-based history
-#source "${ZSH}/completion.zsh"    # tab-completion
-#source "${ZSH}/key-bindings.zsh"  # conditional history (e.g., git <UP_KEY>)
+# Ease-of-life improvement to zsh
+export ZSH="${HOME}/.config/zsh"
+source "${ZSH}/history.zsh"       # term-based history
+source "${ZSH}/completion.zsh"    # tab-completion
+source "${ZSH}/key-bindings.zsh"  # conditional history (e.g., git <UP_KEY>)
 
 export GOPATH="${HOME}/go"
 export GOROOT="/usr/local/opt/go/libexec"
@@ -37,7 +35,7 @@ export GOOS="`uname | awk '{print tolower($0)}'`"
 export STARSHIP_CONFIG="${HOME}/.config/starship.toml"
 
 # Prep shell env
-declare -a LOCAL_PATHS=(
+declare -a LOCAL_BIN_PATHS=(
     "/usr/local/bin"
     "/usr/local/sbin"
     "/opt/depot_tools"
@@ -45,7 +43,7 @@ declare -a LOCAL_PATHS=(
     "${GOPATH}/bin"
     "${GOROOT}/bin"
     #"${HOME}/.wasmtime/bin"
-) && append_path ${LOCAL_PATHS}
+) && append_to_path ${LOCAL_BIN_PATHS}
 
 # For macOS, give priority to non-Apple LLVM toolchain
 [[ "$(uname)" == "Darwin" ]] \
@@ -53,6 +51,7 @@ declare -a LOCAL_PATHS=(
 
 # Terminal colors (runs base16 script)
 ${HOME}/.config/base16_color_space.sh
+export TERM="tmux-256color"
 
 # Add zoxide to our shell
 # * Usage (https://github.com/ajeetdsouza/zoxide#examples):
