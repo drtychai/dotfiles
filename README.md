@@ -1,5 +1,5 @@
 # dotfiles
-My collection of dotfiles for vim, zsh, tmux, karabiner, zathura, and iterm2.
+My collection of dotfiles for vim, zsh, tmux, i3, alacritty, starship, rust, karabiner, zathura, and iterm2.
 
 ## Installation
 ```bash

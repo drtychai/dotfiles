@@ -18,10 +18,14 @@ declare -a LINKED=(
     "${HOME}/.vimrc"
     "${HOME}/.config/zsh"
     "${HOME}/.config/cargo"
+    "${HOME}/.config/alacritty"
+    "${HOME}/.config/i3"
+    "${HOME}/.config/i3status-rust"
     "${HOME}/.config/karabiner/karabiner.json"
     "${HOME}/.config/base16_color_space.sh"
     "${HOME}/.config/starship.toml"
     "${HOME}/.config/zathura"
+    "${HOME}/.config/setup_env.sh"
     "${HOME}/.rustfmt.toml"
 )
 
