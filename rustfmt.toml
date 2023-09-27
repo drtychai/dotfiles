@@ -13,10 +13,6 @@
 # and can only be specified via the --file-lines option.
 #   file_lines = 
 
-# Maximum width of each line.
-# Default: 100
-max_width = 180 
-
 # Ideal width of each line.
 # Default: 80
 max_width = 100
@@ -45,22 +41,22 @@ tab_spaces = 4
 # Unix or Windows line endings.
 # Values: Windows | Unix | Native
 # Default: Unix
-newline_style = Unix 
+newline_style = "Unix" 
 
 # Brace style for functions.
 # Values: AlwaysNextLine | PreferSameLine | SameLineWhere
 # Default: SameLineWhere
-fn_brace_style = SameLineWhere 
+fn_brace_style = "SameLineWhere"
 
 # Brace style for structs and enums.
 # Values: AlwaysNextLine | PreferSameLine | SameLineWhere
 # Default: SameLineWhere
-item_brace_style = SameLineWhere 
+item_brace_style = "SameLineWhere"
 
 # Brace style for control flow construct.
 # Values: AlwaysSameLine | ClosingNextLine | AlwaysNextLine
 # Default: AlwaysSameLine
-control_brace_style = AlwaysSameLine 
+control_brace_style = "AlwaysSameLine"
 
 # Put empty-body implementations on a single line.
 # Default: true
@@ -135,22 +131,22 @@ where_trailing_comma = true
 # If there is a trailing comma on structs.
 # Values: Always | Never | Vertical
 # Default: Vertical
-struct_trailing_comma = Vertical 
+struct_trailing_comma = "Vertical"
 
 # If there is a trailing comma on literal structs.
 # Values: Always | Never | Vertical
 # Default: Vertical
-struct_lit_trailing_comma = Vertical 
+struct_lit_trailing_comma = "Vertical"
 
 # Style of struct definition.
 # Values: Visual | Block
 # Default: Block
-struct_lit_style = Block 
+struct_lit_style = "Block"
 
 # Multiline style on literal structs.
 # Values: PreferSingle | ForceMulti
 # Default: PreferSingle
-struct_lit_multiline_style = ForceMulti 
+struct_lit_multiline_style = "ForceMulti"
 
 # Put a trailing comma on enum declarations.
 # Default: true
@@ -174,7 +170,7 @@ enum_trailing_comma = true
 # Indentation of chain.
 # Values: Inherit | Tabbed | Visual
 # Default: Tabbed
-chain_indent = Tabbed 
+chain_indent = "Tabbed" 
 
 # Allow last call in method chain to break the line.
 # Default: true

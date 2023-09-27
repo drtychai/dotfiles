@@ -264,7 +264,7 @@ function config_shell {
 
 info "Linking dotfiles..."
 
-unlink ${HOME}/.zshrc 
+unlink ${HOME}/.zshrc && touch ${HOME}/.zshrc
 bash ${DIR}/clean.sh > /dev/null
 bash ${DIR}/clean.sh > /dev/null
 
