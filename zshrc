@@ -8,8 +8,10 @@ function append_path() {
     done
 }
 
-export ZSH="${HOME}/.oh-my-zsh"
-source "${ZSH}/oh-my-zsh.sh"
+#PROMPT=' ➜ '
+
+#export ZSH="${HOME}/.oh-my-zsh"
+#source "${ZSH}/oh-my-zsh.sh"
 
 #export ZSH="${HOME}/.config/zsh"
 #source "${ZSH}/history.zsh"       # term-based history
@@ -26,13 +28,13 @@ export GOOS="`uname | awk '{print tolower($0)}'`"
 [ -f "${HOME}/.fzf.zsh" ]          &&  source "${HOME}/.fzf.zsh"
 #[ -s "${HOME}/.wasmer/wasmer.sh" ] &&  source "${HOME}/.wasmer/wasmer.sh"
 
-# Install rust, if missing
-[[ ! -e `which cargo` ]] \
-    && curl --proto "=https" --tlsv1.3 https://sh.rustup.rs -sSf | sh -s -- -y
-
-# Install starship, if missing
-[[ ! -e `which starship` ]] \
-    && cargo install -j`nproc` starship
+## Install rust, if missing
+#[[ ! -e `which cargo` ]] \
+#    && curl --proto "=https" --tlsv1.3 https://sh.rustup.rs -sSf | sh -s -- -y
+#
+## Install starship, if missing
+#[[ ! -e `which starship` ]] \
+#    && cargo install -j`nproc` starship
 
 export STARSHIP_CONFIG="${HOME}/.config/starship.toml"
 
@@ -48,8 +50,8 @@ declare -a LOCAL_PATHS=(
 ) && append_path ${LOCAL_PATHS}
 
 # For macOS, give priority to non-Apple LLVM toolchain
-[[ "$(uname)" == "Darwin" ]] \
-    && export PATH="$(stat -f /usr/local/Cellar/llvm/*/bin):${PATH}" 
+#[[ "$(uname)" == "Darwin" ]] \
+#    && export PATH="$(stat -f /usr/local/Cellar/llvm/*/bin):${PATH}" 
 
 # Terminal colors (runs base16 script)
 ${HOME}/.config/base16_color_space.sh
@@ -66,4 +68,7 @@ ${HOME}/.config/base16_color_space.sh
 eval "$(zoxide init posix --hook prompt)"
 eval "$(starship init zsh)"
 # Add dotfiles bin to PATH
-export PATH=${PATH}:/Users/bynx/opt/sources/dotfiles/bin
+export PATH="${PATH}:${HOME}/opt/dotfiles/bin"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"

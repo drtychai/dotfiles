@@ -10,19 +10,20 @@ NC='\033[0m' # No Color
 
 # List of symlinks to remove
 declare -a LINKED=(
-    "${HOME}/.zshrc"
     "${HOME}/.bash_aliases"
-    "${HOME}/.tmux"
-    "${HOME}/.tmux.conf"
-    "${HOME}/.vim"
-    "${HOME}/.vimrc"
     "${HOME}/.config/zsh"
-    "${HOME}/.config/cargo"
+    #"${HOME}/.config/cargo"
     "${HOME}/.config/karabiner/karabiner.json"
     "${HOME}/.config/base16_color_space.sh"
     "${HOME}/.config/starship.toml"
-    "${HOME}/.config/zathura"
+    #"${HOME}/.config/zathura"
+    "${HOME}/.config/zathura/zathurarc"
     "${HOME}/.rustfmt.toml"
+    #"${HOME}/.tmux"
+    "${HOME}/.tmux.conf"
+    "${HOME}/.vim"
+    "${HOME}/.vimrc"
+    "${HOME}/.zshrc"
 )
 
 # Logging
@@ -69,4 +70,4 @@ function clean_local_env {
 
 clean_local_env 2>/dev/null
 
-info "dotfile cleanup complete"
+info "Dotfile cleanup complete"

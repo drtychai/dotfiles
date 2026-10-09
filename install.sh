@@ -2,33 +2,49 @@
 set -e
 
 # Colors
-L_GREEN='\033[1;32m'
-L_RED='\033[1;31m'
+L_GREEN=$'\033[1;32m'
+L_RED=$'\033[1;31m'
 
-L_GREY='\033[2;49;39m'
-GREY='\033[0;49;90m'
+L_GREY=$'\033[2;49;39m'
+GREY=$'\033[0;49;90m'
 
-L_BLUE='\033[1;34m'
-BLUE='\033[0;34m'
+L_BLUE=$'\033[1;34m'
+BLUE=$'\033[0;34m'
 
-NC='\033[0m' # No Color
+NC=$'\033[0m' # No Color
 
 # Globals
 SH="$(echo ${SHELL} | cut -d '/' -f3)"
 DIR="$(pwd -P)"
 
 # Logging
-function info    { echo -e "${L_GREEN}[+] $@ ${NC}"; }
+function info    { echo -e  "${L_GREEN}[+] $@ ${NC}"; }
 function debug   { echo -e  "${L_GREY}[*] $@ ${NC}"; }
-function error   { echo -e    "${GREY}[-] $@ ${NC}"; }
-function prompt { echo -ne "${L_GREEN}[+] $@ ${NC}"; }
+function error   { echo -e  "${GREY}[-] $@ ${NC}"; }
+function prompt  { echo -ne "${L_GREEN}[+] $@ ${NC}"; }
 
-function fatal   { echo -e   "${L_RED}[-] $@ ${NC}" && exit 1; }
-function success { echo -e "${L_GREEN}[+] $@ ${NC}" && exit 0; }
+function fatal   { echo -e  "${L_RED}[-] $@ ${NC}" && exit 1; }
+function success { echo -e  "${L_GREEN}[+] $@ ${NC}" && exit 0; }
+
+# ToDo: Do a sig validation on the installer
+function install_nix {
+    if ! command -v nix >/dev/null 2>&1; then
+        info "Installing nix ..."
+        curl -sSfL https://artifacts.nixos.org/nix-installer \
+            | sh -s -- install --enable-flakes --no-confirm 2>&1 \
+            | sed "s|^|${L_GREY}    |; s|\$|${NC}|"
+        
+    fi
+    info "Loading nix flake ..."
+    sudo /nix/var/nix/profiles/default/bin/nix \
+        run nix-darwin -- switch --flake "${DIR}/nix#dotfiles" 2>&1 \
+        | sed "s|^|${L_GREY}    |; s|\$|${NC}|"
+ }
+
 
 # Create a symbolic link from the file/dir in our repo to
 # the local environment. If file currently exists, attempt to
-# manually unlink performs recursively calls until all links created
+# manually unlink. Performs recursively calls until all links created
 # --> fn args are idential to symlink <SRC> <TRGT>
 function symlink {
     local src_name="${1}"
@@ -45,11 +61,10 @@ function symlink {
     debug_msg="${debug_msg}${trgt_name/${HOME}/~}"
 
     debug ${debug_msg}
-
-    if [[ ! `ln -s ${src_name} ${trgt_name}` ]];then
-        # Error throw in call
-	    #debug "Manually linking ${trgt_name}..." 
-        [[ ! `unlink ${trgt_name}` ]] && ln -s ${src_name} ${trgt_name} 
+    
+    # If symlink fails, unlink current file and try again
+    if ! ln -s "$src_name" "$trgt_name" 2>/dev/null; then
+        unlink "$trgt_name" 2>/dev/null && ln -s "$src_name" "$trgt_name" 2>/dev/null
     fi
 }
 
@@ -83,25 +98,6 @@ function map_aliases {
         echo "	path = ~/.gitaliases" >> ${HOME}/.gitconfig
     #else error ".gitaliases already in .gitconfig"
     fi
-
-    # Default to skip installation if timeout is triggered 
-    prompt "Install modern CLI (rust) binaries? [y/N]:"
-    read -t 5 response;
-   
-    case "${response}" in
-        [yY][eE][sS]|[yY]) 
-            debug "Installing rust binaries..."
-
-            # Array containing all the binaries we expect on the machine    
-            declare -a RS_BINS=( "`cat ${DIR}/config/cargo/cli-tools.lst | xargs`" )
-            sh -c "cargo install -q -j\`nproc\` ${RS_BINS[@]} 2>&1" | tail -n 1 | sed 's/^\s\+//'
-            
-            ;;
-        [nN][oO]|[nN])
-            ;;
-        *)
-            ;;
-    esac
 
     # Add rust cli bins to our path
     # This is where we've aliases some cmds
@@ -159,7 +155,7 @@ function link {
             if ! [ -h ${HOME}/.${filename} ]; then
                 mkdir -p $debug
                 # Move existing dotfile to $debug
-                mv ${HOME}/.${filename} $debug/
+                mv "${HOME}/.${filename}" "$debug/"
             #else error ".${filename} is already symlinked"
             fi
         else
@@ -167,7 +163,7 @@ function link {
               *"install"*)
                   ;;
               *)
-                  symlink ${DIR}/${filename} ${HOME}/.${filename}
+                  symlink "${DIR}/${filename}" "${HOME}/.${filename}"
                   ;;
             esac
         fi
@@ -239,13 +235,16 @@ function set_theme {
 }
 
 function config_shell {
+    info "Configuring shell tooling ..."
     # Pull in submodules
     pushd ${DIR} >/dev/null
     git submodule update --init --recursive
     popd >/dev/null
 
     # Install vim plugins
-    vim +'PlugInstall --sync' +qa
+    if ! vim +'PlugInstall --sync' +qa; then
+        error "vim plugin install failed ..."
+    fi
 
     # vim config and cloned plug repos
     ln -s ${DIR}/vimrc ${HOME}/.vimrc
@@ -262,20 +261,26 @@ function config_shell {
     git clone --quiet https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 }
 
-info "Linking dotfiles..."
 
-unlink ${HOME}/.zshrc 
-bash ${DIR}/clean.sh > /dev/null
-bash ${DIR}/clean.sh > /dev/null
+if [ -e "${HOME}/.zshrc" ]; then 
+    unlink "${HOME}/.zshrc"
+else
+    touch "${HOME}/.zshrc"
+fi
+
+bash "${DIR}/clean.sh" > /dev/null
+bash "${DIR}/clean.sh" > /dev/null
 
 # Make ${HOME}/.config and ${HOME}/.cargo if not present
 mkdir -p ${HOME}/.config
 mkdir -p ${HOME}/.cargo
 
-map_symlinks
+install_nix
 
+info "Linking dotfiles..."
+map_symlinks
 map_aliases
 map_local_bins
-config_shell
 
+config_shell
 success "Dotfile linking complete"

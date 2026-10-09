@@ -3,3 +3,4 @@
 **/weechat
 **/.DS_Store
 **/.backup
+**/*.lock
